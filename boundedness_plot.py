@@ -209,7 +209,7 @@ plt.ylabel('RMTE [m]')
 plt.xlim(x_lim_extra)
 plt.ylim(y_lim_extra)
 
-plt.savefig(result_dir + 'performance.png')
+plt.savefig(result_dir + 'performance_try.png')
 
 plt.show()
 

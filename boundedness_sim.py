@@ -117,7 +117,7 @@ for iter_of_trial in range(num_of_trial):
 			[v, omega] = [0,0]
 			v_star = 0
 			pre_update_position = [100, 100]
-
+			# v需要使得运动后的robot在距离原点4m内
 			while(not sim_env.inRange(pre_update_position, sim_env.origin)):
 				[v, omega] = [sim_env.max_v*np.random.uniform(-1,1), sim_env.max_omega*np.random.uniform(-1,1)]
 				v_star = v + np.random.normal(0, sqrt(sim_env.var_u_v))

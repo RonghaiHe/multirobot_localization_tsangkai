@@ -101,7 +101,7 @@ plt.xlabel('communication link prob.')
 plt.xlim(x_lim_extra)
 plt.ylim(y_lim_extra)
 
-plt.savefig('topology_result/topology.png')
+plt.savefig('topology_result/topology_try.png')
 
 plt.show()
 

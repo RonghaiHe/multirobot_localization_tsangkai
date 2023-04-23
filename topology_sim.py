@@ -48,7 +48,7 @@ rmte_arr = {
 
 print('comm. prob. = ' + str(sim_env.comm_prob))
 
-for iter_of_topology in range(num_of_topology):
+for iter_of_topology in range(num_of_topology): # 仅根据观测概率和通讯概率生成多种拓扑关系
 
 	print(iter_of_topology)
 
@@ -104,9 +104,9 @@ for iter_of_topology in range(num_of_topology):
 		comm_topology.add_edge(int(edge[0]), int(edge[1]))
 
 	topo_file.close()
+	## 上部分完成初始化，构造拓扑关系，其他算法只能基于当前的拓扑关系
 
-
-	# LS-Cen topology
+	# LS-Cen topology  若能够完全交流，则完全交流，否则只能观测landmark
 	ls_cen_observ_topology = topology.Topology(N)
 	all_to_all_comm = True
 	for i in range(N):
@@ -120,7 +120,7 @@ for iter_of_topology in range(num_of_topology):
 			if edge[1] == N:
 				ls_cen_observ_topology.add_edge(edge[0], edge[1])
 
-	# LS-CI and LS-SCI topology
+	# LS-CI and LS-SCI topology  你得能交流，才观测（带方向的）
 	ls_ci_observ_topology = topology.Topology(N)
 	for edge in observ_topology.edges:
 		if edge[1] == sim_env.N: # absolute observation
@@ -129,7 +129,7 @@ for iter_of_topology in range(num_of_topology):
 		elif edge in comm_topology.edges:  # relative obseravion
 			ls_ci_observ_topology.add_edge(edge[0], edge[1])
 
-	# LS-BDA topology
+	# LS-BDA topology 能够互相交流才观测
 	ls_bda_observ_topology = topology.Topology(N)
 	for edge in observ_topology.edges:
 		if edge[1] == sim_env.N: # absolute observation
@@ -161,14 +161,14 @@ for iter_of_topology in range(num_of_topology):
 			[v, omega] = [0,0]
 			v_star = 0
 			pre_update_position = [100, 100]
-
+			# v需要使得运动后的robot在距离原点4m内
 			while(not sim_env.inRange(pre_update_position, sim_env.origin)):
 				[v, omega] = [sim_env.max_v*np.random.uniform(-1,1), sim_env.max_omega*np.random.uniform(-1,1)]
 				v_star = v + np.random.normal(0, sqrt(sim_env.var_u_v))
 				pre_update_position = [robots[n].position[0] + cos(robots[n].theta)*v_star*dt, robots[n].position[1] + sin(robots[n].theta)*v_star*dt]
 
 			odometry_input[n] = [v, omega]
-			odometry_star_input[n] = [v_star, omega]
+			odometry_star_input[n] = [v_star, omega] # 带有噪声，但是角度没有噪声
 
 		ls_cen_team.motion_propagation_update(odometry_input, dt)
 		ls_ci_team.motion_propagation_update(odometry_input, dt)
@@ -247,7 +247,7 @@ for iter_of_topology in range(num_of_topology):
 	ls_bda_te = 0	
 
 
-
+	# total_T 之后再检验误差效果 只有一次
 	for j in range(N):
 		gs_ci_se += ((gs_ci_robots[j].s[2*j,0] - robots[j].position[0]) ** 2 + (gs_ci_robots[j].s[2*j+1,0] - robots[j].position[1]) ** 2)
 		gs_ci_te += gs_ci_robots[j].sigma[2*j:2*j+2,2*j:2*j+2].trace()[0,0]

@@ -18,7 +18,7 @@ class Topology:
 
 
 
-def generate_topology(node_num, observ_prob, comm_prob):
+def generate_topology(node_num, observ_prob, comm_prob): # 根据机器人个数及各概率生成拓扑关系并导出txt，不考虑观测距离
 
 	observ_topology = Topology(node_num)
 
