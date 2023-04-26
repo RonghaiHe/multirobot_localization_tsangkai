@@ -18,11 +18,19 @@ from ls_ci import LS_CI
 from ls_sci import LS_SCI
 from ls_bda import LS_BDA
 
+# little change, got comm_prob from outside
+import argparse # run automatically
+parser = argparse.ArgumentParser()
+parser.add_argument('--comm_prob', help='set communication probability', default=sim_env.comm_prob)
+args = parser.parse_args()
+
+if args.comm_prob:
+	sim_env.comm_prob = float(args.comm_prob)
 
 num_of_trial = sim_env.num_of_trial
 total_T = sim_env.total_T
 
-num_of_topology = 50
+num_of_topology = 100
 
 N = sim_env.N     # number of robot
 M = sim_env.M     # number of landmark

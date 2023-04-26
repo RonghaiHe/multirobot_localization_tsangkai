@@ -10,12 +10,12 @@ np.random.seed(0)
 
 
 num_of_trial = 100 # 100 boundedness_sim 使用
-total_T = 2000  # 2000 topology_sim 使用
+total_T = 2000  # 2000 topology_sim, boundnedss_sim 使用
 
 
 ##### Topology Parameter
 
-observ_prob = 0.7 # 观测概率
+observ_prob = 0.75 # 观测概率
 comm_prob = 0.2 # 通讯概率
 
 ##### Simulation Environment Setup
@@ -34,7 +34,7 @@ max_omega = 0.05 # 最大角速度
 var_u_v = (0.05**2)*(max_v**2)
 var_u_theta = 0.0001
 
-var_v = 2.0 * 4*max_v*max_v / 12
+var_v = 2.0 * 4*max_v*max_v / 12 # overestimate 因为不清楚
 
 var_dis = 0.05**2
 var_phi = (2.0/180) ** 2

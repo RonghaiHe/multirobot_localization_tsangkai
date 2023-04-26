@@ -25,7 +25,7 @@ class GS_CI():
 
 		ii = 2*self.index
 
-		# estimation update
+		# estimation update 假设没有移动
 		self.s[ii,0] = self.s[ii,0] + cos(self.theta)*v*dt
 		self.s[ii+1,0] = self.s[ii+1,0] + sin(self.theta)*v*dt
 
@@ -36,7 +36,7 @@ class GS_CI():
 			if j==self.index:
 				rot_mtx_theta = sim_env.rot_mtx(self.theta)
 				self.sigma[jj:jj+2, jj:jj+2] += (dt**2)*rot_mtx_theta*matrix([[sim_env.var_u_v, 0],[0, 0]])*rot_mtx_theta.T
-				self.th_sigma[jj:jj+2, jj:jj+2] += 2*(dt**2)*matrix([[sim_env.var_u_v, 0],[0, 0]])
+				self.th_sigma[jj:jj+2, jj:jj+2] += 2*(dt**2)*matrix([[sim_env.var_u_v, 0],[0, 0]]) # ? 不应该统一取下面那个吗，这是求上界啊
 
 			else:
 				self.sigma[jj:jj+2, jj:jj+2] += (dt**2)*sim_env.var_v*sim_env.i_mtx_2.copy()
